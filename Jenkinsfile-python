@@ -1,9 +1,9 @@
 pipeline {
-    agent { label 'python-dev-node' }
-    environment {
-         EMAIL_TO = 'athira.c@reflectionsinfos.com,kalleti.narayana@reflectionsinfos.com'
+    agent { label 'trynode' }
+    // environment {
+    //      EMAIL_TO = 'athira.c@reflectionsinfos.com,kalleti.narayana@reflectionsinfos.com'
         
-    }
+    // }
 
     
     stages {
@@ -12,9 +12,9 @@ pipeline {
             script {
               def remote = [:]
                 remote.name = "python-dev"
-                remote.host = "18.234.194.30"
+                remote.host = "34.204.13.13"
                 remote.allowAnyHosts = true
-               withCredentials([usernamePassword(credentialsId: 'python-dev-ec2', passwordVariable: 'password', usernameVariable: 'userName')]) {
+               withCredentials([usernamePassword(credentialsId: 'ec2jenkins', passwordVariable: 'password', usernameVariable: 'userName')]) {
                 remote.user = userName
                 remote.password = password
                      
@@ -27,8 +27,8 @@ pipeline {
       steps {
       script {
          
-        sh "cd /var/lib/jenkins/workspace/;tar -cf /tmp/python-dev.tar.gz python-dev/"
-         sh "scp  /tmp/python-dev.tar.gz athira@18.234.194.30:/tmp/;rm -rf /tmp/python-dev.tar.gz"
+        sh "cd /home/jai/workspace/;tar -cf /tmp/python-dev.tar.gz python-dev/"
+         sh "scp  /tmp/python-dev.tar.gz jai@34.204.13.13:/tmp/;rm -rf /tmp/python-dev.tar.gz"
          
 
 	  
@@ -41,9 +41,9 @@ pipeline {
         script {
           def remote = [:]
           remote.name = "python-dev"
-          remote.host = "18.234.194.30"
+          remote.host = "34.204.13.13"
           remote.allowAnyHosts = true
-          withCredentials([usernamePassword(credentialsId: 'python-dev-ec2', passwordVariable: 'password', usernameVariable: 'userName')]) {
+          withCredentials([usernamePassword(credentialsId: 'ec2jenkins', passwordVariable: 'password', usernameVariable: 'userName')]) {
             remote.user = userName
             remote.password = password
             sshCommand remote: remote, command:'cd /tmp/;tar -xf python-dev.tar.gz'
@@ -64,24 +64,24 @@ pipeline {
     }
 
 
-post {
-        failure {
-            emailext body: 'Environment:python-dev  \n\n Job Name: ${JOB_NAME} \n Build Number: ${BUILD_NUMBER} \nChanges: ${CHANGES}\n${CAUSE}\n\nCheck console output at $BUILD_URL to view the results. \n\n --------------------Build Log------------------------------ \n${BUILD_LOG, maxLines=100, escapeHtml=false}\n --------------------------------------------------------- \n', 
-                    to: "${EMAIL_TO}", from: 'Jenkins',
-                    subject: 'Build Failed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
-        }
+// post {
+//         failure {
+//             emailext body: 'Environment:python-dev  \n\n Job Name: ${JOB_NAME} \n Build Number: ${BUILD_NUMBER} \nChanges: ${CHANGES}\n${CAUSE}\n\nCheck console output at $BUILD_URL to view the results. \n\n --------------------Build Log------------------------------ \n${BUILD_LOG, maxLines=100, escapeHtml=false}\n --------------------------------------------------------- \n', 
+//                     to: "${EMAIL_TO}", from: 'Jenkins',
+//                     subject: 'Build Failed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+//         }
 
-        success {
-            emailext body: 'Environment: python-dev \n\n Job Name: ${JOB_NAME} \n Build Number: ${BUILD_NUMBER} \nChanges: ${CHANGES}\n ${CAUSE}\n\nCheck console output at $BUILD_URL to view the results. \n\n ---------------------Build Log----------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}\n ----------------------------------------------------------------- \n', 
-                    to: "${EMAIL_TO}", from: 'Jenkins',
-                    subject: 'Build Success in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
-        }
-        unstable {
-            emailext body: 'Environment: python-dev \n\n Job Name: ${JOB_NAME} \n Build Number: ${BUILD_NUMBER} \nChanges: ${CHANGES}\n ${CAUSE}\n\nCheck console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n ---------------------Build Log----------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}\n ----------------------------------------------------- \n', 
-                    to: "${EMAIL_TO}", from: 'Jenkins',
-                    subject: 'Build Unstable in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
-        }
+//         success {
+//             emailext body: 'Environment: python-dev \n\n Job Name: ${JOB_NAME} \n Build Number: ${BUILD_NUMBER} \nChanges: ${CHANGES}\n ${CAUSE}\n\nCheck console output at $BUILD_URL to view the results. \n\n ---------------------Build Log----------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}\n ----------------------------------------------------------------- \n', 
+//                     to: "${EMAIL_TO}", from: 'Jenkins',
+//                     subject: 'Build Success in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+//         }
+//         unstable {
+//             emailext body: 'Environment: python-dev \n\n Job Name: ${JOB_NAME} \n Build Number: ${BUILD_NUMBER} \nChanges: ${CHANGES}\n ${CAUSE}\n\nCheck console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n ---------------------Build Log----------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}\n ----------------------------------------------------- \n', 
+//                     to: "${EMAIL_TO}", from: 'Jenkins',
+//                     subject: 'Build Unstable in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+//         }
         
-    }
+//     }
 }
  
