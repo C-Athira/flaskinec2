@@ -27,7 +27,7 @@ pipeline {
       steps {
       script {
          
-        sh "cd /home/jai/workspace/;tar -cf /tmp/python-dev.tar.gz python-dev/"
+        sh "cd /home/jai/workspace/pipeline;tar -cf /tmp/python-dev.tar.gz python-dev/"
          sh "scp  /tmp/python-dev.tar.gz jai@18.206.209.177:/tmp/"
          //; rm -rf /tmp/python-dev.tar.gz"
 
