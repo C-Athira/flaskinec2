@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'trynode' }
+    agent { label 'jenkinsnode' }
     // environment {
     //      EMAIL_TO = 'athira.c@reflectionsinfos.com,kalleti.narayana@reflectionsinfos.com'
         
@@ -12,9 +12,9 @@ pipeline {
             script {
               def remote = [:]
                 remote.name = "python-dev"
-                remote.host = "18.206.209.177"
+                remote.host = "54.175.104.171"
                 remote.allowAnyHosts = true
-               withCredentials([usernamePassword(credentialsId: 'ec2jenkins', passwordVariable: 'password', usernameVariable: 'userName')]) {
+               withCredentials([usernamePassword(credentialsId: 'athira', passwordVariable: 'password', usernameVariable: 'userName')]) {
                 remote.user = userName
                 remote.password = password
                      
@@ -27,8 +27,9 @@ pipeline {
       steps {
       script {
          
-        sh "cd /home/jai/workspace/;tar -cf /tmp/python-dev.tar.gz python-dev/"
-         sh "scp  /tmp/python-dev.tar.gz jai@18.206.209.177:/tmp/"
+        sh "cd /var/lib/jenkins/;tar -cf /tmp/python-dev.tar.gz python-dev/"
+         sh "scp  /tmp/python-dev.tar.gz athira@54.175.104.171:/tmp/"
+         
          //; rm -rf /tmp/python-dev.tar.gz"
 
 	  
@@ -41,9 +42,9 @@ pipeline {
         script {
           def remote = [:]
           remote.name = "python-dev"
-          remote.host = "18.206.209.177"
+          remote.host = "54.175.104.171"
           remote.allowAnyHosts = true
-          withCredentials([usernamePassword(credentialsId: 'ec2jenkins', passwordVariable: 'password', usernameVariable: 'userName')]) {
+          withCredentials([usernamePassword(credentialsId: 'athira', passwordVariable: 'password', usernameVariable: 'userName')]) {
             remote.user = userName
             remote.password = password
             sshCommand remote: remote, command:'cd /tmp/;tar -xf python-dev.tar.gz'
