@@ -27,7 +27,7 @@ pipeline {
       steps {
       script {
          
-        sh "cd /var/lib/jenkins/;tar -cf /tmp/python-dev.tar.gz python-dev/"
+        sh "cd /var/lib/jenkins/workspace;tar -cf /tmp/python-dev.tar.gz python-dev/"
          sh "scp  /tmp/python-dev.tar.gz athira@54.175.104.171:/tmp/"
          
          //; rm -rf /tmp/python-dev.tar.gz"
